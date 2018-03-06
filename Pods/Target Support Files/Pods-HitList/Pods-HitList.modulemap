@@ -1,0 +1,6 @@
+framework module Pods_HitList {
+  umbrella header "Pods-HitList-umbrella.h"
+
+  export *
+  module * { export * }
+}
