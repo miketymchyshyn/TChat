@@ -20,6 +20,8 @@ protocol UserSelectionDelegate: class {
     func nullifiUser()
 }
 
+
+//TODO: Add animation that shakes the text field and makes it red to indicate to the user that he entered an incorrect password.
 class SignInViewController: UIViewController, LoginButtonDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var containerForFields: UIView!
@@ -122,13 +124,26 @@ class SignInViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
             appDelegate.splitViewMaster?.loginUsingAppLogin = true
             self.performSegue(withIdentifier: "UnwindSegueToUsers", sender: sender)
         } else {
-            let alert = UIAlertController(title: "Unable to login.", message: "Wrong login or password", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            self.passwordTextField.text = ""
+            UIView.animate(withDuration: 0.25, animations: {
+                let scaleTransform = CGAffineTransform(scaleX: 1.5, y: 1.1)
+                self.passwordTextField.backgroundColor = .red
+                self.passwordTextField.transform = scaleTransform
+            }) { (_) in
+                UIView.animate(withDuration: 0.125) {
+                    self.passwordTextField.backgroundColor = .white
+                    self.passwordTextField.transform = CGAffineTransform.identity
+                }
+            }
             
-            present(alert, animated: true, completion: {
-                self.loginTextField.text = ""
-                self.passwordTextField.text = ""
-            })
+            
+//            let alert = UIAlertController(title: "Unable to login.", message: "Wrong login or password", preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//
+//            present(alert, animated: true, completion: {
+//                self.loginTextField.text = ""
+//                self.passwordTextField.text = ""
+//            })
         }
     }
 
